@@ -11,9 +11,9 @@ namespace NETCore.OAuth.Client
 		private readonly ClientCredentials _credentials;
 		private readonly HttpClient _httpClient;
 
-		public OAuthClient(DiscoveryDocument discoveryDiscoveryDocument, ClientCredentials credentials)
+		public OAuthClient(DiscoveryDocument discoveryDocument, ClientCredentials credentials)
 		{
-			_discoveryDocument = discoveryDiscoveryDocument;
+			_discoveryDocument = discoveryDocument;
 			_credentials = credentials;
 
 			_httpClient = new HttpClient();
