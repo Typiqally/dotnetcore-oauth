@@ -32,7 +32,7 @@ namespace NETCore.OAuth.Client
 				Content = new FormUrlEncodedContent(parameters)
 			};
 
-			var response = await _httpClient.ExecuteRequestAsync<TokenResponse>(requestMessage);
+			var response = await _httpClient.SendAsync<TokenResponse>(requestMessage);
 
 			return response.Data;
 		}
