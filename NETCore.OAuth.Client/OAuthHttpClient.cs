@@ -30,11 +30,11 @@ namespace NETCore.OAuth.Client
 
             if (response.StatusCode != HttpStatusCode.Unauthorized)
                 return response;
-            
+
             _token = await _client.RefreshTokenAsync(_token);
             _httpClient.SetBearerToken(_token.AccessToken);
 
-            var retryRequest = new HttpRequestMessage(request.Method, request.RequestUri);
+            var retryRequest = await request.CloneAsync();
             response = await _httpClient.SendAsync(retryRequest);
 
             return response;
