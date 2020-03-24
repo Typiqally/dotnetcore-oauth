@@ -50,22 +50,5 @@ namespace NETCore.OAuth.Client.Extensions
             var request = new HttpRequestMessage(HttpMethod.Get, uri ?? "/");
             return await httpClient.SendAsync<T>(request);
         }
-
-        public static async Task SendAsync(
-            this OAuthHttpClient httpClient,
-            HttpRequestMessage requestMessage)
-        {
-            await httpClient
-                .SendAsync(requestMessage, HttpCompletionOption.ResponseHeadersRead)
-                .ConfigureAwait(false);
-        }
-
-        public static async Task SendAsync(
-            this OAuthHttpClient httpClient,
-            string uri = null)
-        {
-            var request = new HttpRequestMessage(HttpMethod.Get, uri ?? "/");
-            await httpClient.SendAsync(request);
-        }
     }
 }
