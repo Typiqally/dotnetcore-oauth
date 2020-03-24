@@ -12,7 +12,7 @@ namespace NETCore.OAuth.Client.Extensions
             HttpRequestMessage requestMessage)
         {
             var response = await httpClient.SendAsync(requestMessage);
-            return await response.Serialize<T>();
+            return await response.Deserialize<T>();
         }
 
         public static async Task<JsonHttpResponseMessage<T>> SendAsync<T>(
@@ -20,10 +20,10 @@ namespace NETCore.OAuth.Client.Extensions
             HttpRequestMessage requestMessage)
         {
             var response = await httpClient.SendAsync(requestMessage);
-            return await response.Serialize<T>();
+            return await response.Deserialize<T>();
         }
 
-        public static async Task<JsonHttpResponseMessage<T>> Serialize<T>(this HttpResponseMessage response)
+        public static async Task<JsonHttpResponseMessage<T>> Deserialize<T>(this HttpResponseMessage response)
         {
             if (!response.IsSuccessStatusCode)
             {

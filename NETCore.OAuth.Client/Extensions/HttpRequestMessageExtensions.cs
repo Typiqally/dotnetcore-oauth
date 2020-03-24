@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -11,34 +12,17 @@ namespace NETCore.OAuth.Client.Extensions
         {
             var clone = new HttpRequestMessage(requestMessage.Method, requestMessage.RequestUri)
             {
+                Content = requestMessage.Content,
                 Version = requestMessage.Version
             };
-
-            var stream = new MemoryStream();
-            if (requestMessage.Content != null)
-            {
-                await requestMessage.Content
-                    .CopyToAsync(stream)
-                    .ConfigureAwait(false);
-
-                stream.Position = 0;
-                clone.Content = new StreamContent(stream);
-
-                if (requestMessage.Content.Headers != null)
-                {
-                    foreach (var (key, value) in requestMessage.Content.Headers)
-                    {
-                        clone.Content.Headers.Add(key, value);
-                    }
-                }
-            }
 
             foreach (var prop in requestMessage.Properties)
             {
                 clone.Properties.Add(prop);
             }
 
-            foreach (var (key, value) in requestMessage.Headers)
+            var headers = requestMessage.Headers.Where(x => !x.Key.Equals("Authorization"));
+            foreach (var (key, value) in headers)
             {
                 clone.Headers.TryAddWithoutValidation(key, value);
             }
