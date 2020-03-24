@@ -33,7 +33,6 @@ namespace NETCore.OAuth.Client
 			};
 
 			var response = await _httpClient.SendAsync<TokenResponse>(requestMessage);
-
 			return response.Data;
 		}
 	}

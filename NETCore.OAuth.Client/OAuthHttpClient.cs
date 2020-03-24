@@ -1,14 +1,18 @@
 ﻿using System.Net;
 using System.Net.Http;
+using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using NETCore.OAuth.Client.Extensions;
 using NETCore.OAuth.Core;
 
 namespace NETCore.OAuth.Client
 {
-    public class OAuthHttpClient : HttpClient
+    public class OAuthHttpClient
     {
         private readonly OAuthClient _client;
+        private readonly HttpClient _httpClient;
+
         private TokenResponse _token;
 
         public OAuthHttpClient(OAuthClient client, TokenResponse token)
@@ -16,34 +20,24 @@ namespace NETCore.OAuth.Client
             _client = client;
             _token = token;
 
-            this.SetBearerToken(token.AccessToken);
+            _httpClient = new HttpClient();
+            _httpClient.SetBearerToken(_token.AccessToken);
         }
 
-        public new async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, HttpCompletionOption httpCompletionOption)
+        public async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request)
         {
-            var response = await base.SendAsync(request);
+            var response = await _httpClient.SendAsync(request);
 
-            if (response.StatusCode != HttpStatusCode.Unauthorized) return response;
-
+            if (response.StatusCode != HttpStatusCode.Unauthorized)
+                return response;
+            
             _token = await _client.RefreshTokenAsync(_token);
-            this.SetBearerToken(_token.AccessToken);
+            _httpClient.SetBearerToken(_token.AccessToken);
 
             var retryRequest = new HttpRequestMessage(request.Method, request.RequestUri);
-            response = await base.SendAsync(retryRequest);
+            response = await _httpClient.SendAsync(retryRequest);
 
             return response;
-        }
-
-        public new async Task SendAsync(HttpRequestMessage requestMessage)
-        {
-            await SendAsync(requestMessage, HttpCompletionOption.ResponseHeadersRead)
-                .ConfigureAwait(false);
-        }
-
-        public new async Task SendAsync(string uri = null)
-        {
-            var request = new HttpRequestMessage(HttpMethod.Get, uri ?? "/");
-            await SendAsync(request);
         }
     }
 }

@@ -1,18 +1,20 @@
-﻿using System.Net;
-using System.Net.Http;
+﻿using System.Net.Http;
 
-namespace NETCore.OAuth.Core
+namespace NETCore.OAuth.Client
 {
-	public class JsonHttpResponseMessage<T>
-	{
-		public JsonHttpResponseMessage(HttpResponseMessage responseMessage, T data)
-		{
-			StatusCode = responseMessage.StatusCode;
-			Data = data;
-		}
+    public class JsonHttpResponseMessage<T>
+    {
+        private readonly HttpResponseMessage _message;
+        private readonly T _data;
 
-		public HttpStatusCode StatusCode { get; }
+        public JsonHttpResponseMessage(HttpResponseMessage message, T data = default)
+        {
+            _message = message;
+            _data = data;
+        }
 
-		public T Data { get; }
-	}
+        public HttpResponseMessage Message => _message;
+
+        public T Data => _data;
+    }
 }
