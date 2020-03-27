@@ -39,5 +39,9 @@ namespace NETCore.OAuth.Client
 
             return response;
         }
+
+        public HttpClient HttpClient => _httpClient;
+
+        public TokenResponse Token => _token;
     }
 }
