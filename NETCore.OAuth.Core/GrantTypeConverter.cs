@@ -13,7 +13,7 @@ namespace NETCore.OAuth.Core
 				GrantType.ClientCredentials => "client_credentials",
 				GrantType.Implicit => "implicit",
 				GrantType.RefreshToken => "refresh_token",
-				_ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+				_ => throw new ArgumentOutOfRangeException(nameof(type))
 			};
 		}
 

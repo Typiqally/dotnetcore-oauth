@@ -1,7 +1,6 @@
 ﻿using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
-using NETCore.OAuth.Core;
 
 namespace NETCore.OAuth.Client.Extensions
 {

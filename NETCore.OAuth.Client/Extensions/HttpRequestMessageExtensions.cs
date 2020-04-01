@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -8,7 +6,7 @@ namespace NETCore.OAuth.Client.Extensions
 {
     public static class HttpRequestMessageExtensions
     {
-        public static async Task<HttpRequestMessage> CloneAsync(this HttpRequestMessage requestMessage)
+        public static HttpRequestMessage Clone(this HttpRequestMessage requestMessage)
         {
             var clone = new HttpRequestMessage(requestMessage.Method, requestMessage.RequestUri)
             {
